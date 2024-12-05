@@ -1,7 +1,7 @@
 DROP DATABASE IF EXISTS mtv_awards;
 CREATE DATABASE IF NOT EXISTS mtv_awards DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE mtv_awards;
-CREATE USER 'usermtvawards'@'localhost' IDENTIFIED BY 'mtvawards123';
+CREATE USER 'usermtvawards' @'localhost' IDENTIFIED BY 'mtvawards123';
 GRANT ALL PRIVILEGES ON mtv_awards.* TO 'usermtvawards' @'localhost' IDENTIFIED BY 'mtvawards123';
 CREATE TABLE `roles` (
   `id_rol` int(3) NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -18,7 +18,7 @@ CREATE TABLE `usuarios` (
   `ap_usuario` varchar(50) NOT NULL,
   `am_usuario` varchar(50) NULL,
   `sexo_usuario` tinyint(2) NOT NULL COMMENT '0: Femenino, 1: Masculino',
-  `email_usuario` varchar(50) NULL,
+  `correo_usuario` varchar(50) NULL,
   `password_usuario` varchar(64) NULL,
   `imagen_usuario` varchar(200) DEFAULT NULL,
   `id_rol` int(3) NOT NULL,
@@ -31,7 +31,7 @@ INSERT INTO `usuarios` (
     `ap_usuario`,
     `am_usuario`,
     `sexo_usuario`,
-    `email_usuario`,
+    `correo_usuario`,
     `password_usuario`,
     `imagen_usuario`,
     `id_rol`
