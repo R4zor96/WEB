@@ -1,6 +1,7 @@
 DROP DATABASE IF EXISTS mtv_awards;
 CREATE DATABASE IF NOT EXISTS mtv_awards DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE mtv_awards;
+CREATE USER 'usermtvawards'@'localhost' IDENTIFIED BY 'mtvawards123';
 GRANT ALL PRIVILEGES ON mtv_awards.* TO 'usermtvawards' @'localhost' IDENTIFIED BY 'mtvawards123';
 CREATE TABLE `roles` (
   `id_rol` int(3) NOT NULL PRIMARY KEY AUTO_INCREMENT,
