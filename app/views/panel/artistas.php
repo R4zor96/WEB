@@ -119,7 +119,7 @@ $artistas = $tabla_artista->readAllArtists();
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
-                        <?= mostrar_menu_lateral("ARTISTAS") ?>
+                        <?= mostrar_menu_lateral($_SESSION, "ARTISTAS") ?>
                     </ul>
                 </nav>
             </div>

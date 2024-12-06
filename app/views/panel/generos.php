@@ -119,7 +119,7 @@ $generos = $tabla_generos->readAllGenerosIncluyendoEstatus();
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
-                        <?= mostrar_menu_lateral("GENEROS") ?>
+                        <?= mostrar_menu_lateral($_SESSION, "GENEROS") ?>
                     </ul>
                 </nav>
             </div>

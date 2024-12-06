@@ -21,6 +21,10 @@ SET time_zone = "+00:00";
 -- Base de datos: `mtv_awards`
 --
 
+DROP DATABASE IF EXISTS mtv_awards;
+CREATE DATABASE IF NOT EXISTS mtv_awards DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE mtv_awards;
+
 -- --------------------------------------------------------
 
 --
@@ -185,10 +189,11 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 --
 
 INSERT INTO `usuarios` (`estatus_usuario`, `id_usuario`, `nombre_usuario`, `ap_usuario`, `am_usuario`, `sexo_usuario`, `email_usuario`, `password_usuario`, `imagen_usuario`, `id_rol`) VALUES
-(NULL, 1, 'Admon', 'Admon', NULL, 1, 'admon@mtvawards.com', '0bc01fae70b5e73eabb266178092ea42dfddd9657c903b22210913821ad86261', NULL, 128),
-(1, 2, 'Artista', 'Artista', '', 2, 'artista@mtvawards.com', '721dce38870b6a80f02f15a3191634cb4bae3b644649e4f86820b66873c22ea1', NULL, 85),
-(NULL, 3, 'Operador', 'Operador', NULL, 0, 'operador@mtvawards.com', '1725165c9a0b3698a3d01016e0d8205155820b8d7f21835ca64c0f81c728d880', NULL, 8),
+(0, 1, 'Admon', 'Admon', NULL, 1, 'admon@mtvawards.com', '0bc01fae70b5e73eabb266178092ea42dfddd9657c903b22210913821ad86261', NULL, 128),
+(1, 2, 'Artista', 'Artista', '', 1, 'artista@mtvawards.com', '721dce38870b6a80f02f15a3191634cb4bae3b644649e4f86820b66873c22ea1', NULL, 85),
+(0, 3, 'Operador', 'Operador', NULL, 0, 'operador@mtvawards.com', '1725165c9a0b3698a3d01016e0d8205155820b8d7f21835ca64c0f81c728d880', NULL, 8),
 (1, 9, 'usuario1', 'usu', 'usu', 1, 'usuario1@example.com', '2270e73a86e507f7a99d98e739a62f96ec812c1a19b37a0db27785e620518566', NULL, 85);
+
 
 -- --------------------------------------------------------
 

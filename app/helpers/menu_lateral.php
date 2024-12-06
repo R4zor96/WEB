@@ -22,7 +22,6 @@ function configuracion_menu($dataSession, $pagina = '')
     $menu_item['submenu'] = array();
     $menu['usuarios'] = $menu_item;
 
-
     //Opcion Artistas
     $menu_item['is_active'] = (($pagina == 'ARTISTAS') ? true : false);
     $menu_item['href'] = './artistas.php';
