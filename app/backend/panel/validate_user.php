@@ -14,33 +14,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tabla_usuario = new Tabla_usuarios();
 
     // $_POST['variableinterfaz'] | $_GET["variableinterfaz"]
-    if (isset($_POST["email"]) && isset($_POST["password"])) {
+    if (!empty($_POST["email"]) && !empty($_POST["password"])) {
         $email = $_POST["email"];
         $pass = $_POST["password"];
 
         //Executo la petición
         $data = $tabla_usuario->validateUser($email, $pass);
 
-        // print_r($data);
+        print_r($data);
         if (!empty($data)) {
             $_SESSION["is_logged"] = true;
             $_SESSION["id_usuario"] = $data->id_usuario;
-            $_SESSION["name"] = $data->nombre_usuario . ' ' . $data->ap_usuario . ' ' . $data->am_usuario;
-            $_SESSION["email"] = $data->correo_usuario;
+            $_SESSION["rol"] = $data->id_rol;
+            $_SESSION["name"] = $data->id_usuario;
+            $_SESSION["email"] = $data->email_usuario;
             $_SESSION["nickname"] = $data->nombre_usuario;
             $_SESSION["img"] = (is_null($data->imagen_usuario)) ? (($data->sexo_usuario == 0) ? 'woman.png' : 'man.png') : $data->imagen_usuario;
-            $_SESSION["rol"] = $data->rol;
-            $_SESSION["id_rol"] = $data->id_rol;
 
-            $_SESSION['message'] = array("type" => "info", "description" => "Bienvenido al sistema", "title" => "Inicio de sesión éxitoso");
-
-            if ($_SESSION["id_rol"] != 8) {
+            // Verificar el rol del usuario
+            if ($data->id_rol == 128) { // administrador
+                $_SESSION['message'] = array("type" => "info", "description" => "Bienvenido al sistema", "title" => "Inicio de sesión éxitoso");
                 header('Location: ../../views/panel/dashboard.php');
-            }//end if
-            else {
-                header('Location: ../../../index.php');
+                exit();
+            } elseif ($data->id_rol == 85) { // artista
+                $_SESSION['message'] = array("type" => "info", "description" => "Bienvenido al sistema", "title" => "Inicio de sesión éxitoso");
+                header('Location: ../../views/panel/dashboard_artista.php');
+                exit();
+            } elseif ($data->id_rol == 8) {
+                $_SESSION['message'] = array("type" => "info", "description" => "Bienvenido al sistema", "title" => "Inicio de sesión éxitoso");
+                header('Location: ../../views/usuario/index.php');
+                exit();
+            } else {
+                $_SESSION['message'] = array("type" => "info", "description" => "Bienvenido al sistema", "title" => "Inicio de sesión éxitoso");
+                header('Location: ../../../index.html');
+                exit();
             }
-            exit();
 
         }//end if
         else {
@@ -52,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $type = 'danger';
             $message = 'Correo electrónico o contraseña son incorrectas.';
-            header('Location: ../../views/usuario/login.php?error=' . $message . '&type=' . $type);
+            header('Location: ../../../index.php?error=' . $message . '&type=' . $type);
             exit();
 
         }//end else
@@ -60,13 +68,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     else {
         $type = 'warning';
         $message = 'Las credenciales de acceso son requeridas.';
-        header('Location: ../../views/usuario/login.php?error=' . $message . '&type=' . $type);
+        header('Location: ../../../index.php?error=' . $message . '&type=' . $type);
         exit();
     }//end else
 }//end REQUEST_METHOD
 else {
     $type = 'warning';
     $message = 'Error al procesar los datos...';
-    header('Location: ../../views/usuario/login.php?error=' . $message . '&type=' . $type);
+    header('Location: ../../../index.php?error=' . $message . '&type=' . $type);
     exit();
 }//end else REQUEST_METHOD

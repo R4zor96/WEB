@@ -13,7 +13,7 @@
         //Instancia del modelo
         $tabla_usuario = new Tabla_usuarios();
 
-        // $tabla_usuario->updateUser($id, array('estatus_usuario' => intval($_GET['estatus'])));
+        //$tabla_usuario->updateUser($id, array('estatus_usuario' => intval($_GET['estatus'])));
 
         //STAMENT QUERY - UPDATE
         if($tabla_usuario->updateUser($id, array('estatus_usuario' => intval($_GET['estatus'])))){

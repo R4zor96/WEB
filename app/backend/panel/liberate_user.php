@@ -9,4 +9,4 @@
     session_destroy();
 
     //Redireccionar al login
-    header('location: ../../views/usuario/login.php');
+    header('location: ../../../app/views/usuario/login.php');

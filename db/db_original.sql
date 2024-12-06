@@ -1,16 +1,21 @@
-DROP DATABASE IF EXISTS mtv_awards;
-CREATE DATABASE IF NOT EXISTS mtv_awards DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE mtv_awards;
-CREATE USER 'usermtvawards' @'localhost' IDENTIFIED BY 'mtvawards123';
-GRANT ALL PRIVILEGES ON mtv_awards.* TO 'usermtvawards' @'localhost' IDENTIFIED BY 'mtvawards123';
+DROP DATABASE IF EXISTS mtv_awards2;
+CREATE DATABASE IF NOT EXISTS mtv_awards2 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE mtv_awards2;
+
+CREATE USER 'usermtvawards'@'localhost' IDENTIFIED BY 'mtvawards123';
+
+GRANT ALL PRIVILEGES ON mtv_awards2.* TO 'usermtvawards'@'localhost' IDENTIFIED BY 'mtvawards123';
+
 CREATE TABLE `roles` (
   `id_rol` int(3) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `rol` varchar(50) NOT NULL
-) ENGINE = InnoDB;
-INSERT INTO `roles` (`id_rol`, `rol`)
-VALUES (128, 'Administrador'),
-  (85, 'Artista'),
-  (8, 'Operador');
+) ENGINE=InnoDB;
+
+INSERT INTO `roles` (`id_rol`, `rol`) VALUES
+	(128, 'Administrador'),
+	(85, 'Artista'),
+	(8, 'Operador');
+
 CREATE TABLE `usuarios` (
   `estatus_usuario` tinyint(2) NULL DEFAULT 0 COMMENT '0: Deshabilitado, 1: Habilitado',
   `id_usuario` int(3) NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -23,71 +28,31 @@ CREATE TABLE `usuarios` (
   `imagen_usuario` varchar(200) DEFAULT NULL,
   `id_rol` int(3) NOT NULL,
   FOREIGN KEY (id_rol) REFERENCES roles (id_rol) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB;
-INSERT INTO `usuarios` (
-    `estatus_usuario`,
-    `id_usuario`,
-    `nombre_usuario`,
-    `ap_usuario`,
-    `am_usuario`,
-    `sexo_usuario`,
-    `correo_usuario`,
-    `password_usuario`,
-    `imagen_usuario`,
-    `id_rol`
-  )
-VALUES (
-    NULL,
-    NULL,
-    'Admon',
-    'Admon',
-    NULL,
-    1,
-    'admon@mtvawards.com',
-    SHA2("admon123", 0),
-    NULL,
-    128
-  ),
-  (
-    NULL,
-    NULL,
-    'Artista',
-    'Artista',
-    NULL,
-    0,
-    'artista@mtvawards.com',
-    SHA2("artista123", 0),
-    NULL,
-    85
-  ),
-  (
-    NULL,
-    NULL,
-    'Operador',
-    'Operador',
-    NULL,
-    0,
-    'operador@mtvawards.com',
-    SHA2("operador123", 0),
-    NULL,
-    8
-  );
+) ENGINE=InnoDB;
+
+INSERT INTO `usuarios` (`estatus_usuario`, `id_usuario`, `nombre_usuario`, `ap_usuario`, `am_usuario`, `sexo_usuario`, `correo_usuario`, `password_usuario`, `imagen_usuario`, `id_rol`) VALUES
+	(NULL, NULL, 'Admon', 'Admon', NULL, 1, 'admon@mtvawards.com', SHA2("admon123",0), NULL, 128),
+	(NULL, NULL, 'Artista', 'Artista', NULL, 0, 'artista@mtvawards.com', SHA2("artista123",0), NULL, 85),
+	(NULL, NULL, 'Operador', 'Operador', NULL, 0, 'operador@mtvawards.com', SHA2("operador123",0), NULL, 8);
+
 CREATE TABLE `generos` (
   `estatus_genero` tinyint(2) NULL DEFAULT 0 COMMENT '0: Deshabilitado, 1: Habilitado',
   `id_genero` int(3) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `nombre_genero` varchar(50) NOT NULL
-) ENGINE = InnoDB;
+) ENGINE=InnoDB ;
+
 CREATE TABLE `artistas` (
   `estatus_artista` tinyint(2) NULL DEFAULT 0 COMMENT '0: Deshabilitado, 1: Habilitado',
   `id_artista` int(3) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `pseudonimo_artista` varchar(50) NOT NULL,
   `nacionalidad_artista` varchar(100) NOT NULL,
-  `biografia_artista` text DEFAULT NULL COMMENT 'El artista aún no ha presentado su biografía',
+  `biografia_artista` text DEFAULT NULL COMMENT'El artista aún no ha presentado su biografía' ,
   `id_usuario` int(3) NOT NULL,
   `id_genero` int(3) NOT NULL,
   FOREIGN KEY (id_usuario) REFERENCES usuarios (id_usuario) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (id_genero) REFERENCES generos (id_genero) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB;
+) ENGINE=InnoDB ;
+
 CREATE TABLE `albumes` (
   `estatus_album` tinyint(2) NULL DEFAULT 0 COMMENT '0: Deshabilitado, 1: Habilitado',
   `fecha_lanzamiento_album` DATE NOT NULL,
@@ -99,7 +64,8 @@ CREATE TABLE `albumes` (
   `id_genero` int(3) NOT NULL,
   FOREIGN KEY (id_artista) REFERENCES artistas (id_artista) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (id_genero) REFERENCES generos (id_genero) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB;
+) ENGINE=InnoDB ;
+
 CREATE TABLE `canciones` (
   `estatus_cancion` tinyint(2) NULL DEFAULT 0 COMMENT '0: Deshabilitado, 1: Habilitado',
   `id_acancion` int(3) NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -115,16 +81,17 @@ CREATE TABLE `canciones` (
   FOREIGN KEY (id_artista) REFERENCES artistas (id_artista) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (id_genero) REFERENCES generos (id_genero) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (id_album) REFERENCES albumes (id_album) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB;
+) ENGINE=InnoDB;
+
 CREATE TABLE `votaciones` (
-  `fecha_creacion_votacion` timestamp NOT NULL DEFAULT current_timestamp(),
-  `id_votacion` int(3) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  `id_artista` int(3) NOT NULL,
-  `id_album` int(3) NOT NULL,
-  `id_acancion` int(3) NOT NULL,
-  `id_usuario` int(3) NOT NULL,
-  FOREIGN KEY (id_artista) REFERENCES artistas (id_artista) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (id_album) REFERENCES albumes (id_album) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (id_acancion) REFERENCES canciones (id_acancion) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (id_usuario) REFERENCES usuarios (id_usuario) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB;
+	`fecha_creacion_votacion` timestamp NOT NULL DEFAULT current_timestamp(),
+	`id_votacion` int(3) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	`id_artista` int(3) NOT NULL,
+	`id_album` int(3) NOT NULL,
+    `id_acancion` int(3) NOT NULL,
+	`id_usuario` int(3) NOT NULL,
+	FOREIGN KEY (id_artista) REFERENCES artistas (id_artista) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (id_album) REFERENCES albumes (id_album) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (id_acancion) REFERENCES canciones (id_acancion) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (id_usuario) REFERENCES usuarios (id_usuario) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;

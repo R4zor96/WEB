@@ -67,7 +67,8 @@ class Tabla_usuarios
             QUERY - SELECT
             SELECT * FROM usuarios INNER JOIN roles ON usuarios.id_rol = roles.id_rol;
          */
-        $sql = "SELECT * FROM " . $this->table . " INNER JOIN roles ON " . $this->table . ".id_rol = roles.id_rol ORDER BY ap_usuario;";
+        $sql = "SELECT * FROM usuarios INNER JOIN roles ON usuarios.id_rol = roles.id_rol; ORDER BY ap_usuario;";
+
         try {
             //PREPARE THE STATEMENT
             $stmt = $this->connect->prepare($sql);
@@ -109,6 +110,38 @@ class Tabla_usuarios
             echo "Error in query: " . $e->getMessage();
         }//end catch
     }//end readGetUser
+
+    public function readAllUsersForArt()
+    {
+        /**
+         * QUERY - SELECT
+         * Selecciona usuarios tipo Artista (id_rol = 85) que no tengan registros en la tabla artistas.
+         * SELECT * FROM usuarios 
+         * INNER JOIN roles ON usuarios.id_rol = roles.id_rol
+         * WHERE usuarios.id_rol = 85 AND usuarios.id_usuario NOT IN (SELECT id_usuario FROM artistas)
+         * ORDER BY ap_usuario;
+         */
+        $sql = "SELECT * 
+                FROM " . $this->table . " 
+                INNER JOIN roles ON " . $this->table . ".id_rol = roles.id_rol
+                WHERE " . $this->table . ".id_rol = 85
+                AND " . $this->table . ".id_usuario NOT IN (SELECT id_usuario FROM artistas)
+                ORDER BY ap_usuario;";
+        try {
+            // Preparar la consulta
+            $stmt = $this->connect->prepare($sql);
+            // Configurar el modo de fetch
+            $stmt->setFetchMode(PDO::FETCH_OBJ);
+            // Ejecutar la consulta
+            $stmt->execute();
+            // Retornar los resultados obtenidos
+            $users = $stmt->fetchAll();
+            return (!empty($users)) ? $users : array();
+        } catch (PDOException $e) {
+            echo "Error in query: " . $e->getMessage();
+            return array();
+        }
+    }
 
     public function updateUser($id_usuario = 0, $data = array())
     {
@@ -189,7 +222,7 @@ class Tabla_usuarios
     //--------------------------
     public function validateUser($email = '', $pass = '')
     {
-        $sql = 'SELECT usuarios.*, roles.* FROM ' . $this->table . ' INNER JOIN roles ON usuarios.id_rol = roles.id_rol WHERE correo_usuario = :email AND password_usuario = SHA2(:pass,0);';
+        $sql = 'SELECT usuarios.*, roles.* FROM ' . $this->table . ' INNER JOIN roles ON usuarios.id_rol = roles.id_rol WHERE email_usuario = :email AND password_usuario = SHA2(:pass,0);';
         try {
             //Preparate the query
             $stmt = $this->connect->prepare($sql);

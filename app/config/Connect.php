@@ -1,7 +1,6 @@
 <?php
     class Connect{
         public $connect =  null;
-
         private $host = 'localhost';
         private $db = 'mtv_awards';
         private $user = 'usermtvawards';
