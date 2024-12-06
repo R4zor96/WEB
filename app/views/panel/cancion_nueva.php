@@ -104,14 +104,6 @@ $generos = $tabla_generos->readAllGeneros();
             echo mostrar_breadcrumb_art('Canción Nueva', $breadcrumb);
             ?>
 
-
-            <form action="../../backend/panel/canciones/si.php" method="POST">
-                <label for="duracion_cancion">Duración de la Canción (HH:MM:SS):</label>
-                <input type="text" id="duracion_cancion" name="duracion_cancion" pattern="^([0-9]{2}):([0-9]{2}):([0-9]{2})$" placeholder="00:03:45" required>
-                <small>Formato: HH:MM:SS</small>
-                <button type="submit">Enviar</button>
-            </form>
-
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
@@ -144,8 +136,8 @@ $generos = $tabla_generos->readAllGeneros();
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="duracion_cancion">Duración</label>
-                                                    <input type="time" step="1" name="duracion_cancion" class="form-control"
-                                                        id="duracion_cancion" required>
+                                                    <input type="time" step="1" name="duracion_cancion"
+                                                        class="form-control" id="duracion_cancion" required>
                                                 </div>
                                             </div>
                                         </div>

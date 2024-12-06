@@ -46,11 +46,11 @@ class Tabla_albumes
 
     // Leer todos los álbumes de un usuario específico
     public function readAllAlbums($id_usuario)
-    {
-        {
-            $sql = "SELECT * FROM " . $this->table . " WHERE estatus_album = 1;";
+    { {
+            $sql = "SELECT * FROM " . $this->table . " p join artistas a ON p.id_artista=a.id_artista WHERE a.id_usuario = :id;";
             try {
                 $stmt = $this->connect->prepare($sql);
+                $stmt->bindValue(":id", $id_usuario, PDO::PARAM_INT);
                 $stmt->setFetchMode(PDO::FETCH_OBJ);
                 $stmt->execute();
                 $generos = $stmt->fetchAll();
@@ -63,8 +63,7 @@ class Tabla_albumes
     }
 
     public function readAllAlbumsGeneral($id_usuario)
-    {
-        {
+    { {
             $sql = "SELECT * FROM " . $this->table . ";";
             try {
                 $stmt = $this->connect->prepare($sql);
